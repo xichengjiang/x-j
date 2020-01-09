@@ -33,10 +33,6 @@ ggpairs(credit1)
 # nrow(training)
 # nrow(test)
 
-
-############################################################
-###**** Nonlinear Regression: Ridge and LASSO
-
 # Needed packages to perform Ridge and LASSO
 install.packages("MASS")
 install.packages("glmnet")
@@ -48,27 +44,8 @@ library(glmnet)
 #		Ridge Regression
 #**************************************
 
-# Function: glmnet(x, y, family, alpha= , 
-#                 nlambda= , lambda= , standardize= )
-#gml: genraized linear model (for non linear methods)
-# x = input matrix
-# y = response variable 
-# family is set based on response variable (i.e. 
-# family = "gaussian" when y is quantitative)
-# if alpha = 0 -> then will use the ridge penalty
-# if alpha = 1 -> then will use the LASSO penalty
-# nlambda - number of lambda values - default is 100
-# lambda - user supplied lambda sequence
-# standardize=TRUE is default
 
-
-# Use model.matrix() function to create x -> not only does
-# it produce a matrix corresponding to the p predictors 
-# but it also automatically transforms any qualitative 
-# variables into dummy variables. This property is important
-# because glmnet() can only take numerical, quantitative inputs.
-
-# make sure you remove the first column which will
+# remove the first column which will
 # leave only the predictors
 #have the formula as the first argument 
 x <- model.matrix(Balance~., credit1)[,-1]
@@ -93,7 +70,6 @@ summary(ridge1$lambda)
 coef(ridge1, s=ridge1$lambda[60])
 
 
-# if you would like to specify a specific
 # sequence of lambdas
 lambda_seq <- 10^seq(10,-5,length=150)
 #lambda argument--- if you wish to provide your own sequence 
@@ -107,16 +83,6 @@ ridge2 <- glmnet(x, y, alpha=0, lambda=lambda_seq)
 plot(ridge1, xvar="lambda", label=TRUE, main="Ridge Trace for Credit Data")
 plot(ridge2, xvar="lambda", label=TRUE, main="Ridge Trace for Credit Data")
 
-
-## One of the main concerns with Ridge (and LASSO) is with how 
-# to choose the best tuning parameter; we can use CV to choose
-# the optimal/best lambda
-
-# Function: cv.glmnet(x, x, alpha, lambda, nfolds, type.measure)
-# x, y, alpha are all the same arguments from glmnet
-# lambda - sequence of lambdas to use - can use default or create own
-# nfolds = number of folds to use; default is 10 folds
-# type.measure = method to calculate prediction error (5 options)
 
 ## Ridge Regression with K-Fold CV
 ridge.cv <- cv.glmnet(x, y, nfolds=5, alpha=0, type.measure = "mse" )
@@ -141,20 +107,6 @@ coef(ridge.cv, s=best_lambda)
 #restrict it to one specific lambda 
 ridge_final <- glmnet(x, y, alpha=0, lambda=best_lambda)
 coef(ridge_final)
-
-
-##** You can use the predict function for the ridge model 
-# with the optimal lambda from CV
-# prd <- predict(ridge1, newx=x_train, s=best_lambda)
-
-# Calculate Training/Test Error
-# mean((prd - obs_y)^2)
-
-# Remember at the end to fit the ridge regression using the
-# full data set and the lambda selected using CV
-
-##** REMEMBER that Ridge Regression does NOT perform variable
-# variable selection
 
 
 
@@ -207,9 +159,3 @@ final_lasso <- glmnet(x, y, alpha=1, lambda = lambda.lasso)
 coef(final_lasso)
 
 
-# Remember at the end to fit the ridge regression using the
-# full data set and the lambda selected using CV
-
-## Things to note - if the tuning parameter is chosen
-# wisely, then Ridge and LASSO will actually outperform 
-# Least Squares model in terms of prediction error/test set error
