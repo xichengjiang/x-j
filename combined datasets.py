@@ -5,7 +5,7 @@
 import numpy as np # load numpy as np
 import pandas as pd # load pandas as pd
 import datetime
-##  This assignment requires data from four files: 
+##  data files: 
 ##
 ##      'movies.txt':  A file of over 3900 movies
 ##      'users.dat':   A file of over 6000 reviewers who provided ratings
@@ -13,7 +13,6 @@ import datetime
 ##      'zips.txt':    A file of zip codes and location information
 ##
 ##  The file 'readme.txt' has more information about the first three files.
-##  You will need to consult the readme file to answer some of the questions.
 
 movies = open('/Users/jiangxicheng/Desktop/STAT3250/movies.txt').read().splitlines()
 users = open('/Users/jiangxicheng/Desktop/STAT3250/users.dat').read().splitlines()
@@ -53,13 +52,8 @@ dfuser['Zipcode']=dfuser['Zipcode'].str.split("-").str[0]
 str[:5]
 dfuser['Occupation']=(dfuser['occupid'].astype(float)).map(dict)  # map the dictionary to the dataframe 
 dfmov=pd.Series(movies).str.split('::',expand=True)
-dfmov.columns=['ID','titles','genres']
-##  Note: You will need to convert the zip code information in 'users.dat' into
-##  state (or territory) information for one or more of the questions below.
-##  You must use the information in 'zips.txt' for this purpose, you cannot
-##  use other conversion methods. 
 
-## 1.  Determine the percentage of users that are female.  Do the same for the
+## 1.  The percentage of users that are female.  Do the same for the
 ##     percentage of users in the 35-44 age group.  In the 18-24 age group,
 ##     determine the percentage of male users.
 
@@ -169,9 +163,7 @@ np.sum(name_only.value_counts()!=1)    #count the number
 """
 
 ## 6.  Determine the average rating for each occupation classification 
-##     (including 'other or not specified'), and give the results in a
-##     table sorted from highest to lowest average and including the
-##     occupation title.
+##     (including 'other or not specified')
 
 occup=pd.Series(users).str.split('::').str[3]  #extract the occupation column 
 useid=pd.Series(users).str.split('::').str[0]   #user id 
@@ -206,7 +198,7 @@ farmer                    3.466741
 unemployed                3.414050
 """
 
-## 7.  Determine the average rating for each genre, and give the results in
+## 7.   the average rating for each genre, and give the results in
 ##     a table listing genre and average rating in descending order.
 
 genre=pd.Series(movies).str.split('::').str[-1].str.split('|')   #
@@ -276,7 +268,7 @@ rating
 5    34.368274
 """
 
-## 9.  Find all combinations (if there are any) of occupation and genre for 
+## 9.  all combinations (if there are any) of occupation and genre for 
 ##     which there are no ratings.  
 
 userrate=pd.merge(dfuser,dfr,on='userid')
