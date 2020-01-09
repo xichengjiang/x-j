@@ -1,14 +1,10 @@
 ## 
-## name: Xicheng Jiang  computing ID: xj2kv
-## File: assignment04.py (STAT 3250)
-## Topic: Assignment 4
 ##
 import pandas as pd
 import numpy as np
-##  This assignment requires the data file 'airline_tweets.csv'.  This file
+##  'airline_tweets.csv'.  
 ##  contains records of over 14000 tweets and associated information related
-##  to a number of airlines.  You should be able to read this file in using
-##  the usual pandas methods.
+##  to a number of airlines.  
 data = pd.read_csv('/Users/jiangxicheng/Desktop/STAT3250/airline_tweets.csv')
 ##  Note: Questions 1-9 should be done without the use of loops.  
 ##        Questions 10-13 can be done with loops.
